@@ -30,9 +30,11 @@ function findCombinations(comboMatrix, numbers) {
       const firstPair = combo[0].map(i => numbers[i]);
       const secondPair = combo[1].map(i => numbers[i]);
 
-      // TODO: Check totals calculation. Seems screwy.
       // Get the totals in numerical order to help with finding duplicate results.
-      const totals = [Number(firstPair[0]) + Number(firstPair[1]), Number(secondPair[0]) + Number(secondPair[1])].sort();
+      const totals = [
+        firstPair[0] + firstPair[1],
+        secondPair[0] + secondPair[1]
+      ];
       return {
         indices: [[combo[0][0], combo[0][1]], [combo[1][0], combo[1][1]]],
         totals,
@@ -42,7 +44,7 @@ function findCombinations(comboMatrix, numbers) {
   
   combinations = combinations.reduce((prev, current, i) => {
     // Don't add this one if the previous one had the same totals
-    if (prev.length && prev[prev.length -1].totals.join(",") === current.totals.join(","))
+    if (prev.length && prev[prev.length -1].totals.sort().join(",") === current.totals.sort().join(","))
       return prev;
 
     return [
