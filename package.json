@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --base=/dungeons-dice-danger-helper",
     "preview": "vite preview"
   },
   "dependencies": {
