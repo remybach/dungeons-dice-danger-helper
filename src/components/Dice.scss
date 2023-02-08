@@ -1,0 +1,27 @@
+.dice {
+  &-black {
+    border-color: #5C5F66;
+    border-width: 3px;
+  }
+
+  &-combinations {
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  &-combination {
+    display: flex;
+    font-size: 0.66rem;
+    justify-content: space-around;
+    margin: 0.5rem 0;
+    
+    &-result {
+      font-size: 2rem;
+      line-height: 1em;
+    }
+    &-symbol {
+      height: 2rem;
+      width: 2rem;
+    }
+  }
+}
