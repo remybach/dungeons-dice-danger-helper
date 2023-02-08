@@ -74,7 +74,7 @@ function DiceRollProvider({children}) {
   }, 1000);
 
   const rollDice = useCallback(() => {
-    setState({ diceAreRolling: true });
+    setState({ diceAreRolling: true, selectedNumber: null });
 
     startRolling();
   }, [startRolling]);
