@@ -1,5 +1,7 @@
-import { createContext, useCallback, useContext, useEffect, useMemo } from 'react';
-import { useSetState, useTimeout } from '@mantine/hooks';
+import { createContext, useCallback, useContext, useEffect, useMemo } from "react";
+import { useSetState, useTimeout } from "@mantine/hooks";
+
+import { randomIntBetween } from "../helpers";
 
 const DiceRollContext = createContext();
 
@@ -19,11 +21,6 @@ const BLACK_DIE_COMBINATIONS = [
   [[3,4], [0,1]],
   [[3,4], [0,2]],
 ];
-
-// https://stackoverflow.com/a/7228322
-function randomIntFromInterval(min, max) { // min and max included 
-  return Math.floor(Math.random() * (max - min + 1) + min)
-}
 
 function findCombinations(comboMatrix, numbers) {
   let combinations = comboMatrix.map(combo => {
@@ -62,12 +59,12 @@ function DiceRollProvider({children}) {
       black: [],
       white: [],
     },
-    // currentRoll: [1,2,3,4,5],
-    currentRoll: [1,4,3,1,2],
-    diceAreRolling: false
+    currentRoll: [1,2,3,4,5],
+    diceAreRolling: false,
+    selectedNumber: null
   });
 
-  const getRandomDieNumber = () => randomIntFromInterval(1, 6);
+  const getRandomDieNumber = () => randomIntBetween(1, 6);
   
   const { start: startRolling, clear } = useTimeout(() => {
     setState({
@@ -81,6 +78,18 @@ function DiceRollProvider({children}) {
 
     startRolling();
   }, [startRolling]);
+
+  const setSelectedNumber = useCallback((num) => 
+    setState({ selectedNumber: state.selectedNumber !== num ? num : null })
+  , [state.selectedNumber]);
+
+  const updateDie = (index) => {
+    const newRoll = [...state.currentRoll];
+    newRoll[index] = (state.currentRoll[index] + 1) % 6 || 6;
+    setState({
+      currentRoll: newRoll
+    });
+  };
 
   useEffect(() => {
     const whiteDice = state.currentRoll.slice(0, state.currentRoll.length - 1);
@@ -101,9 +110,12 @@ function DiceRollProvider({children}) {
     combinations: state.combinations,
     currentRoll: state.currentRoll,
     diceAreRolling: state.diceAreRolling,
+    selectedNumber: state.selectedNumber,
     getRandomDieNumber,
-    rollDice
-  }), [rollDice, state]);
+    rollDice,
+    setSelectedNumber,
+    updateDie
+  }), [rollDice, setSelectedNumber, state]);
 
   return <DiceRollContext.Provider value={value}>{children}</DiceRollContext.Provider>;
 }

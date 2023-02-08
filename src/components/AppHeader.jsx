@@ -9,7 +9,7 @@ import { useDiceRoller } from '../providers';
 import "./AppHeader.scss";
 
 export const AppHeader = () => {
-  const { currentRoll, diceAreRolling, getRandomDieNumber, rollDice } = useDiceRoller();
+  const { currentRoll, diceAreRolling, getRandomDieNumber, rollDice, updateDie } = useDiceRoller();
   const [ rollingValues, setRollingValues ] = useState();
 
   const interval = useInterval(() => {
@@ -28,7 +28,14 @@ export const AppHeader = () => {
   return (
     <Paper radius={0} p="xs" shadow="xs" className="app-header">
       {(rollingValues ?? currentRoll).map((die, i) => {
-        return <Die key={`die-${i}`} value={die} colour={i === currentRoll.length -1 ? "black" : "white"} />;
+        return (
+          <Die
+            colour={i === currentRoll.length -1 ? "black" : "white"}
+            key={`die-${i}`}
+            onClick={() => updateDie(i)}
+            value={die}
+          />
+        );
       })}
       <Button disabled={diceAreRolling} variant="filled" onClick={rollDice}>
         Roll!

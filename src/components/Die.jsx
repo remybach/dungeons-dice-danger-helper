@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import "./Die.scss";
 
-export const Die = ({ colour = "white", value, style }) => {
+export const Die = ({ colour = "white", onClick = () => {}, value, style }) => {
   const [pips, setPips] = useState([]);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export const Die = ({ colour = "white", value, style }) => {
   }, [value]);
 
   return (
-    <span className={`die die-${value} die-${colour}`} title={value} style={style}>
+    <span className={`die die-${value} die-${colour}`} onClick={onClick} title={value} style={style}>
       {pips}
     </span>
   );

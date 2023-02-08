@@ -1,6 +1,6 @@
 import { Center, Loader } from '@mantine/core';
 
-import { AppHeader, Dice } from "./components";
+import { AppHeader, Dice, Tips } from "./components";
 import { useDiceRoller } from "./providers";
 
 export default function App() {
@@ -15,10 +15,7 @@ export default function App() {
         <>
           <Dice colour="white" />
           <Dice colour="black" />
-          {/* TODO: */}
-          {/* <Alert icon={<IconAlertCircle size={16} />} title="Tip">
-            Some tips here: duplicates have been removed, click to highlight
-          </Alert> */}
+          <Tips />
         </>
       )}
     </>

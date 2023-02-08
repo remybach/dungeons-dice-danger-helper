@@ -1,27 +1,40 @@
+$borderColour: #5C5F66;
+
 .dice {
   &-black {
-    border-color: #5C5F66;
+    border-color: $borderColour;
     border-width: 3px;
   }
 
   &-combinations {
+    cursor: pointer;
     display: flex;
     justify-content: space-evenly;
   }
 
   &-combination {
+    border: 1px dashed transparent;
     display: flex;
     font-size: 0.66rem;
     justify-content: space-around;
-    margin: 0.5rem 0;
-    
+    padding: 0.5rem;
+
     &-result {
       font-size: 2rem;
       line-height: 1em;
     }
+
     &-symbol {
       height: 2rem;
       width: 2rem;
+    }
+
+    &.is-selected {
+      border-color: $borderColour;
+    }
+
+    &.is-semi-transparent {
+      opacity: 0.3;
     }
   }
 }
