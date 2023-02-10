@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { AppShell, Center, Loader } from '@mantine/core';
+import { AppShell, Skeleton } from '@mantine/core';
 
 import { AppHeader, Dice, Roller, Tips } from "./components";
 import { useDiceRoller, usePeer } from "./providers";
@@ -27,7 +27,10 @@ export default function App() {
       <div style={{ maxWidth: "470px", margin: "0 auto" }}>
         <Roller />
         { diceAreRolling ? (
-          <Center m="sm"><Loader variant="bars" /></Center>
+          <>
+            <Skeleton height={192} my={16} p="lg" radius="md" />
+            <Skeleton height={192} my={16} p="lg" radius="md" />
+          </>
         ) : (
           <>
             <Dice colour="white" />
