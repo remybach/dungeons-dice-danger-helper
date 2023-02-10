@@ -16,7 +16,7 @@ export const AppHeader = () => {
   return (
     <Header height={60} p="xs" className="app-header">
       <Group noWrap={true}>
-        <Avatar src="/ddnd-logo.png" alt="Dice, Dungeons & Danger Logo" />
+        <Avatar src="ddnd-logo.png" alt="Dice, Dungeons & Danger Logo" />
         <Text>Dice, Dungeons & Danger Helper</Text>
       </Group>
       {util.supports.data ? (
