@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { Center, Loader } from '@mantine/core';
+import { AppShell, Center, Loader } from '@mantine/core';
 
-import { AppHeader, Dice, Tips } from "./components";
+import { AppHeader, Dice, Roller, Tips } from "./components";
 import { useDiceRoller, usePeer } from "./providers";
 
 export default function App() {
@@ -17,8 +17,14 @@ export default function App() {
   }, []);
   
   return (
-    <>
-      <AppHeader />
+    <AppShell
+      padding="xs"
+      header={<AppHeader />}
+      styles={(theme) => ({
+        main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
+      })}
+    >
+      <Roller />
       { diceAreRolling ? (
         <Center m="sm"><Loader variant="bars" /></Center>
       ) : (
@@ -28,6 +34,6 @@ export default function App() {
           <Tips />
         </>
       )}
-    </>
+    </AppShell>
   );
 }

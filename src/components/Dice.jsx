@@ -41,7 +41,7 @@ export const Dice = ({ colour = "white" }) => {
   const combos = combinations[colour];
 
   return (
-    <Card shadow="sm" m="md" p="lg" radius="md" withBorder className={`dice dice-${colour}`}>
+    <Card shadow="sm" p="lg" radius="md" withBorder className={`dice dice-${colour}`}>
       {combos?.length > 0 ? combos.map((combo, i) => 
         <DiceCombo key={`combo-${i}`} indices={combo.indices} totals={combo.totals} />
       ) : (
