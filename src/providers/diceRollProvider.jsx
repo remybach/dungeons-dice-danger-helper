@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo } from "react";
 import { useSetState, useTimeout } from "@mantine/hooks";
+import { usePeer } from '../providers';
 
 import { randomIntBetween } from "../helpers";
 
@@ -54,6 +55,7 @@ function findCombinations(comboMatrix, numbers) {
 }
 
 function DiceRollProvider({children}) {
+  const { onUpdate, sendUpdate } = usePeer();
   const [state, setState] = useSetState({
     combinations: {
       black: [],
@@ -67,14 +69,20 @@ function DiceRollProvider({children}) {
   const getRandomDieNumber = () => randomIntBetween(1, 6);
   
   const { start: startRolling, clear } = useTimeout(() => {
-    setState({
+    const newState = {
       currentRoll: state.currentRoll.map(() => getRandomDieNumber()),
       diceAreRolling: false
-    });
+    }
+    
+    setState(newState);
+    sendUpdate(newState);
   }, 1000);
 
   const rollDice = useCallback(() => {
-    setState({ diceAreRolling: true, selectedNumber: null });
+    const rollingState = { diceAreRolling: true, selectedNumber: null };
+
+    setState(rollingState);
+    sendUpdate(rollingState);
 
     startRolling();
   }, [startRolling]);
@@ -86,9 +94,9 @@ function DiceRollProvider({children}) {
   const updateDie = (index) => {
     const newRoll = [...state.currentRoll];
     newRoll[index] = (state.currentRoll[index] + 1) % 6 || 6;
-    setState({
-      currentRoll: newRoll
-    });
+    const newState = { currentRoll: newRoll };
+    setState(newState);
+    sendUpdate(newState);
   };
 
   useEffect(() => {
@@ -105,6 +113,11 @@ function DiceRollProvider({children}) {
       }
     });
   }, [state.currentRoll]);
+
+  useEffect(() => {
+    // Bind setState to the PeerContextProvider so that incoming state updates get applied here.
+    onUpdate(setState);
+  }, []);
 
   const value = useMemo(() => ({
     combinations: state.combinations,

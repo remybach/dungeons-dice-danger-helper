@@ -1,1 +1,2 @@
-export * from "./diceRollProvider";
+export * from "./DiceRollProvider";
+export * from "./PeerContextProvider";
