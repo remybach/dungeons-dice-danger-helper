@@ -26,7 +26,7 @@ export const Roller = () => {
   }, [diceAreRolling]);
   
   return (
-    <Paper radius={0} p="xs" shadow="xs" className="roller">
+    <Paper radius={0} p="xs" shadow="xs" radius="sm" className="roller">
       {(rollingValues ?? currentRoll).map((die, i) => {
         return (
           <Die
