@@ -16,8 +16,8 @@ export const AppHeader = () => {
   return (
     <Header height={60} p="xs" className="app-header">
       <Group noWrap={true}>
-        <Avatar src="/dungeons-dice-danger-helper/ddnd-logo.png" alt="Dice, Dungeons & Danger Logo" />
-        <Text>Dice, Dungeons & Danger Helper</Text>
+        <Avatar src="/dungeons-dice-danger-helper/ddnd-logo.png" alt="Dungeons, Dice & Danger Logo" />
+        <Text>Dungeons, Dice & Danger Helper</Text>
       </Group>
       {util.supports.data ? (
         <Button variant="subtle" onClick={() => setModalOpened(true)}>
