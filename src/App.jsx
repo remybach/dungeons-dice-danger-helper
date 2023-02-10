@@ -24,16 +24,18 @@ export default function App() {
         main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
       })}
     >
-      <Roller />
-      { diceAreRolling ? (
-        <Center m="sm"><Loader variant="bars" /></Center>
-      ) : (
-        <>
-          <Dice colour="white" />
-          <Dice colour="black" />
-          <Tips />
-        </>
-      )}
+      <div style={{ maxWidth: "470px", margin: "0 auto" }}>
+        <Roller />
+        { diceAreRolling ? (
+          <Center m="sm"><Loader variant="bars" /></Center>
+        ) : (
+          <>
+            <Dice colour="white" />
+            <Dice colour="black" />
+          </>
+        )}
+      </div>
+      <Tips />
     </AppShell>
   );
 }
