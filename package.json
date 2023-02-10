@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --base=/dungeons-dice-danger-helper",
     "build": "vite build --base=/dungeons-dice-danger-helper",
     "preview": "vite preview"
   },
