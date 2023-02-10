@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo } from "react";
 import { useSetState, useTimeout } from "@mantine/hooks";
-import { usePeer } from '../providers';
+import { usePeer } from '.';
 
 import { randomIntBetween } from "../helpers";
 
@@ -54,7 +54,7 @@ function findCombinations(comboMatrix, numbers) {
   return combinations;
 }
 
-function DiceRollProvider({children}) {
+export function DiceRollProvider({children}) {
   const { onUpdate, sendUpdate } = usePeer();
   const [state, setState] = useSetState({
     combinations: {
@@ -133,12 +133,10 @@ function DiceRollProvider({children}) {
   return <DiceRollContext.Provider value={value}>{children}</DiceRollContext.Provider>;
 }
 
-function useDiceRoller() {
+export function useDiceRoller() {
   const context = useContext(DiceRollContext);
   if (context === undefined) {
     throw new Error('useDiceRoller must be used within a DiceRollProvider');
   }
   return context;
 }
-
-export { DiceRollProvider, useDiceRoller };
