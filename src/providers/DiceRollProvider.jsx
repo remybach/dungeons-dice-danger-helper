@@ -91,14 +91,6 @@ export function DiceRollProvider({children}) {
     setState({ selectedNumber: state.selectedNumber !== num ? num : null })
   , [state.selectedNumber]);
 
-  const updateDie = (index) => {
-    const newRoll = [...state.currentRoll];
-    newRoll[index] = (state.currentRoll[index] + 1) % 6 || 6;
-    const newState = { currentRoll: newRoll };
-    setState(newState);
-    sendUpdate(newState);
-  };
-
   useEffect(() => {
     const whiteDice = state.currentRoll.slice(0, state.currentRoll.length - 1);
     
@@ -127,7 +119,6 @@ export function DiceRollProvider({children}) {
     getRandomDieNumber,
     rollDice,
     setSelectedNumber,
-    updateDie
   }), [rollDice, setSelectedNumber, state]);
 
   return <DiceRollContext.Provider value={value}>{children}</DiceRollContext.Provider>;

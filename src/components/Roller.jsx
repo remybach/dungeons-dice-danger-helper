@@ -9,7 +9,7 @@ import { useDiceRoller } from '../providers';
 import "./Roller.scss";
 
 export const Roller = () => {
-  const { currentRoll, diceAreRolling, getRandomDieNumber, rollDice, updateDie } = useDiceRoller();
+  const { currentRoll, diceAreRolling, getRandomDieNumber, rollDice } = useDiceRoller();
   const [ rollingValues, setRollingValues ] = useState();
 
   const interval = useInterval(() => {
@@ -32,7 +32,6 @@ export const Roller = () => {
           <Die
             colour={i === currentRoll.length -1 ? "black" : "white"}
             key={`die-${i}`}
-            onClick={() => updateDie(i)}
             value={die}
           />
         );
