@@ -16,7 +16,7 @@ export const ConnectionModal = ({ opened = false, onClose = () => {} }) => {
       onClose={onClose}
       title="Connect Devices"
     >
-      <p>Scan the QR code or click the button below to copy the link.</p>
+      <p>Scan the QR code or click the button to copy the link.</p>
       <Box style={{ textAlign: "center" }}>
         <QRCode size={128} value={link} /><br />
 
