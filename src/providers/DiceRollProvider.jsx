@@ -38,11 +38,11 @@ function findCombinations(comboMatrix, numbers) {
         totals,
       };
   })
-  .sort((a, b) => a.totals.join(',').localeCompare(b.totals.join(',')))
+  .sort((a, b) => a.totals.join(',').localeCompare(b.totals.join(',')));
   
   combinations = combinations.reduce((prev, current, i) => {
     // Don't add this one if the previous one had the same totals
-    if (prev.length && prev[prev.length -1].totals.sort().join(",") === current.totals.sort().join(","))
+    if (prev.length && prev[prev.length -1].totals.join(",") === current.totals.join(","))
       return prev;
 
     return [
