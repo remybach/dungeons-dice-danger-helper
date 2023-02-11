@@ -2,7 +2,7 @@ $borderColour: #5C5F66;
 
 .dice {
   margin: 16px 0;
-  
+
   &-black {
     border-color: $borderColour;
     border-width: 3px;
@@ -22,6 +22,7 @@ $borderColour: #5C5F66;
     padding: 0.5rem;
 
     &-result {
+      font-family: "Monaco";
       font-size: 2rem;
       line-height: 1em;
     }

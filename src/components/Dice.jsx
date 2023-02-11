@@ -27,7 +27,7 @@ const DiceCombo = ({ indices, totals }) => {
             <Plus className="dice-combination-symbol" />
             <Die colour={numberIndices[1] === currentRoll.length - 1 ? "black" : "white"} value={currentRoll[numberIndices[1]]} />
             <Equal className="dice-combination-symbol" />
-            <Text className="dice-combination-result">{totals[i]}</Text>
+            <Text className="dice-combination-result">{totals[i]}{totals[i] < 10 ? "\u00A0" : ""}</Text>
           </div>
         );
       }
