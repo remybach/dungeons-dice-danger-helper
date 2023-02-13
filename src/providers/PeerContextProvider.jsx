@@ -52,10 +52,12 @@ export function PeerContextProvider({
     setState({ onUpdate });
   }
 
-  const sendUpdate = useCallback((data) => {
+  const sendUpdate = useCallback((data, currentConnectionId) => {
     for (let connectionKey in peer.connections) {
       for (let connection of peer.connections[connectionKey]) {
-        connection.send(data);
+        if (connection.connectionId !== currentConnectionId) {
+          connection.send(data);
+        }
       }
     }
   }, [peer]);
@@ -67,7 +69,10 @@ export function PeerContextProvider({
       console.info("Connected!");
       
       // This is needed to send from the client -> host
-      conn.on("data", onUpdateCallback);
+      conn.on("data", (data) => {
+        onUpdateCallback(data);
+        sendUpdate(data, conn.connectionId);
+      });
       
       setState({ isConnected: true });
     };
