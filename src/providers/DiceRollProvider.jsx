@@ -2,57 +2,9 @@ import { createContext, useCallback, useContext, useEffect, useMemo } from "reac
 import { useSetState, useTimeout } from "@mantine/hooks";
 import { usePeer } from '.';
 
-import { randomIntBetween } from "../helpers";
+import { findCombinations, randomIntBetween } from "../helpers";
 
 const DiceRollContext = createContext();
-
-const WHITE_DIE_COMBINATIONS = [
-  [[0,1], [2,3]],
-  [[0,2], [1,3]],
-  [[0,3], [1,2]],
-];
-
-const BLACK_DIE_COMBINATIONS = [
-  [[0,4], [1,2]],
-  [[0,4], [1,3]],
-  [[1,4], [0,2]],
-  [[1,4], [0,3]],
-  [[2,4], [0,1]],
-  [[2,4], [0,3]],
-  [[3,4], [0,1]],
-  [[3,4], [0,2]],
-];
-
-function findCombinations(comboMatrix, numbers) {
-  let combinations = comboMatrix.map(combo => {
-      const firstPair = combo[0].map(i => numbers[i]);
-      const secondPair = combo[1].map(i => numbers[i]);
-
-      // Get the totals in numerical order to help with finding duplicate results.
-      const totals = [
-        firstPair[0] + firstPair[1],
-        secondPair[0] + secondPair[1]
-      ];
-      return {
-        indices: [[combo[0][0], combo[0][1]], [combo[1][0], combo[1][1]]],
-        totals,
-      };
-  })
-  .sort((a, b) => a.totals.join(',').localeCompare(b.totals.join(',')));
-  
-  combinations = combinations.reduce((prev, current, i) => {
-    // Don't add this one if the previous one had the same totals
-    if (prev.length && prev[prev.length -1].totals.join(",") === current.totals.join(","))
-      return prev;
-
-    return [
-      ...prev,
-      current
-    ]
-  }, []);
-
-  return combinations;
-}
 
 export function DiceRollProvider({children}) {
   const { onUpdate, sendUpdate } = usePeer();
@@ -95,8 +47,8 @@ export function DiceRollProvider({children}) {
     const whiteDice = state.currentRoll.slice(0, state.currentRoll.length - 1);
     
     // Work out all the different combinations
-    const whiteCombos = findCombinations(WHITE_DIE_COMBINATIONS, whiteDice);
-    const blackCombos = findCombinations(BLACK_DIE_COMBINATIONS, state.currentRoll);
+    const whiteCombos = findCombinations("white", whiteDice);
+    const blackCombos = findCombinations("black", state.currentRoll);
 
     setState({
       combinations: {
