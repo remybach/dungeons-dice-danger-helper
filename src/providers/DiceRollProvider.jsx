@@ -32,7 +32,7 @@ export function DiceRollProvider({children}) {
   }, 1000);
 
   const rollDice = useCallback(() => {
-    const rollingState = { diceAreRolling: true, selectedNumber: null };
+    const rollingState = { diceAreRolling: true, selectedNumber: null, myTurn: false };
 
     setState({ ...rollingState, myTurn: true });
     sendUpdate(rollingState);
