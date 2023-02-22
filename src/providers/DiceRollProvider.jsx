@@ -15,7 +15,8 @@ export function DiceRollProvider({children}) {
     },
     currentRoll: [1,2,3,4,5],
     diceAreRolling: false,
-    selectedNumber: null
+    selectedNumber: null,
+    myTurn: false
   });
 
   const getRandomDieNumber = () => randomIntBetween(1, 6);
@@ -33,7 +34,7 @@ export function DiceRollProvider({children}) {
   const rollDice = useCallback(() => {
     const rollingState = { diceAreRolling: true, selectedNumber: null };
 
-    setState(rollingState);
+    setState({ ...rollingState, myTurn: true });
     sendUpdate(rollingState);
 
     startRolling();
@@ -67,6 +68,7 @@ export function DiceRollProvider({children}) {
     combinations: state.combinations,
     currentRoll: state.currentRoll,
     diceAreRolling: state.diceAreRolling,
+    myTurn: state.myTurn,
     selectedNumber: state.selectedNumber,
     getRandomDieNumber,
     rollDice,
