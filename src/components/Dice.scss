@@ -15,6 +15,7 @@ $borderColour: #5C5F66;
   }
 
   &-combination {
+    align-items: center;
     border: 1px dashed transparent;
     display: flex;
     font-size: 0.66rem;
@@ -25,6 +26,11 @@ $borderColour: #5C5F66;
       font-family: Monaco, monospace;
       font-size: 2rem;
       line-height: 1em;
+      margin-left: 16px;
+    }
+
+    .die + .die {
+      margin-left: 16px;
     }
 
     &-symbol {
@@ -38,6 +44,10 @@ $borderColour: #5C5F66;
 
     &.is-semi-transparent {
       opacity: 0.3;
+    }
+
+    .mantine-Indicator-indicator {
+      font-size: 10px;
     }
   }
 }

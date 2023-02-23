@@ -1,5 +1,5 @@
 import { Card, Text } from '@mantine/core';
-import { Plus, Equal } from 'tabler-icons-react';
+import { Equal } from 'tabler-icons-react';
 
 import { useDiceRoller } from '../providers';
 
@@ -13,6 +13,7 @@ const DiceCombo = ({ indices, totals }) => {
     <div className="dice-combinations">
       {(indices || []).map((numberIndices, i) => {
         const classNames = ["dice-combination"];
+        const isPair = currentRoll[numberIndices[0]] === currentRoll[numberIndices[1]];
         
         if (selectedNumber === totals[i]) {
           classNames.push("is-selected");
@@ -24,9 +25,8 @@ const DiceCombo = ({ indices, totals }) => {
         return (
           <div key={`combos-${i}`} className={classNames.join(" ")} onClick={() => setSelectedNumber(totals[i])}>
             <Die colour={numberIndices[0] === currentRoll.length - 1 ? "black" : "white"} value={currentRoll[numberIndices[0]]} />
-            <Plus className="dice-combination-symbol" />
+            {isPair ? (<Equal size={16} strokeWidth={1} />) : null}
             <Die colour={numberIndices[1] === currentRoll.length - 1 ? "black" : "white"} value={currentRoll[numberIndices[1]]} />
-            <Equal className="dice-combination-symbol" />
             <Text className="dice-combination-result">{totals[i]}{totals[i] < 10 ? "\u00A0" : ""}</Text>
           </div>
         );
