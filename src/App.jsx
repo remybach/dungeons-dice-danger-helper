@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import { AppShell, Skeleton } from '@mantine/core';
 
-import { AppHeader, Dice, Roller, Tips } from "./components";
+import { AppFooter, AppHeader, Dice, Roller, Tips } from "./components";
 import { useDiceRoller, usePeer } from "./providers";
+
+import "./App.scss";
 
 export default function App() {
   const { diceAreRolling } = useDiceRoller();
@@ -18,7 +20,9 @@ export default function App() {
   
   return (
     <AppShell
+      className="app"
       padding="xs"
+      footer={<AppFooter />}
       header={<AppHeader />}
       styles={(theme) => ({
         main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },

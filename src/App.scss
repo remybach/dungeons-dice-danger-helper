@@ -1,0 +1,9 @@
+.app {
+  // padding-bottom: calc(var(--mantine-footer-height, 0px) + 10px);
+  position: relative;
+  
+  .mantine-AppShell-main {
+    min-height: calc(100vh - var(--mantine-footer-height, 0px));
+    padding-bottom: 10px;
+  }
+}

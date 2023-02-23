@@ -1,3 +1,4 @@
+export * from "./AppFooter";
 export * from "./AppHeader";
 export * from "./ConnectionModal";
 export * from "./Die";
