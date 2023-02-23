@@ -21,6 +21,8 @@ const comboMatrix = {
   ]
 };
 
+const sortAscending = (a, b) => a - b;
+
 export const findCombinations = (dieColour, numbers) => {
   let combinations = comboMatrix[dieColour].map(combo => {
       const firstPair = combo[0].map(i => numbers[i]);
@@ -39,9 +41,11 @@ export const findCombinations = (dieColour, numbers) => {
   .sort((a, b) => a.totals.join(',').localeCompare(b.totals.join(',')));
   
   combinations = combinations.reduce((prev, current, i) => {
-    // Don't add this one if the previous one had the same totals
-    if (prev.length && prev[prev.length -1].totals.sort().join(",") === current.totals.sort().join(","))
-      return prev;
+    // Don't add this one if one of the previous ones had the same totals
+    for (const prevItem of prev) {
+      if (prevItem.totals.sort(sortAscending).join(",") === current.totals.sort(sortAscending).join(","))
+        return prev;
+    }
 
     return [
       ...prev,

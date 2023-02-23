@@ -47,17 +47,43 @@ test("Get the correct combinations given 5 rolled dice using the black die as we
 });
 
 test("Don't show duplicate results", () => {
-  const dice = [5,3,5,2,4];
-  const combos = findCombinations("white", dice);
-  
-  // Because this is effectively the same as the last one
-  expect(JSON.stringify(combos[0])).not.to.equal(JSON.stringify(
-    { indices: [[0,1], [2,3]], totals: [8,7] }
-  ));
+  const dice = [6, 6, 5, 1, 4];
+  let combos = findCombinations("white", dice);
+
   expect(JSON.stringify(combos[0])).to.equal(JSON.stringify(
-    { indices: [[0,2], [1,3]], totals: [10,5] }
+    { indices: [[0,2], [1,3]], totals: [11,7] }
   ));
   expect(JSON.stringify(combos[1])).to.equal(JSON.stringify(
-    { indices: [[0,3], [1,2]], totals: [7,8] }
+    { indices: [[0,1], [2,3]], totals: [12,6] }
+  ));
+  expect(JSON.stringify(combos[2])).not.to.equal(JSON.stringify(
+    { indices: [[0,3], [1,2]], totals: [7,11] }
+  ));
+  
+  combos = findCombinations("black", dice);
+  
+  expect(JSON.stringify(combos[0])).to.equal(JSON.stringify(
+    { indices: [[0,4], [1,2]], totals: [10,11] }
+  ));
+  expect(JSON.stringify(combos[1])).to.equal(JSON.stringify(
+    { indices: [[0,4], [1,3]], totals: [10,7] }
+  ));
+  expect(JSON.stringify(combos[2])).not.to.equal(JSON.stringify(
+    { indices: [[1,4], [0,2]], totals: [10,11] }
+  ));
+  expect(JSON.stringify(combos[2])).not.to.equal(JSON.stringify(
+    { indices: [[1,4], [0,3]], totals: [10,7] }
+  ));
+  expect(JSON.stringify(combos[2])).to.equal(JSON.stringify(
+    { indices: [[3,4], [0,2]], totals: [5,11] }
+  ));
+  expect(JSON.stringify(combos[3])).to.equal(JSON.stringify(
+    { indices: [[3,4], [0,1]], totals: [5,12] }
+  ));
+  expect(JSON.stringify(combos[4])).to.equal(JSON.stringify(
+    { indices: [[2,4], [0,1]], totals: [9,12] }
+  ));
+  expect(JSON.stringify(combos[5])).to.equal(JSON.stringify(
+    { indices: [[2,4], [0,3]], totals: [9,7] }
   ));
 });
