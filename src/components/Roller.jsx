@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import { Alert, Button, Paper } from '@mantine/core';
+import { Alert, Button, Checkbox, Paper } from '@mantine/core';
 import { useInterval } from '@mantine/hooks';
 
 import { Die } from '.';
-import { useDiceRoller } from '../providers';
+import { useDiceRoller, usePeer } from '../providers';
 
 import "./Roller.scss";
 
 export const Roller = () => {
-  const { currentRoll, diceAreRolling, getRandomDieNumber, myTurn, rollDice } = useDiceRoller();
+  const { peer, isConnected } = usePeer();
+  const { currentRoll, diceAreRolling, getRandomDieNumber, myTurn, readyStates, rollDice, toggleReady } = useDiceRoller();
   const [ rollingValues, setRollingValues ] = useState();
+  const [ everyoneReady, setEveryoneReady ] = useState(true);
 
   const interval = useInterval(() => {
     setRollingValues(currentRoll.map(() => getRandomDieNumber()));
@@ -18,16 +20,43 @@ export const Roller = () => {
 
   useEffect(() => {
     if (diceAreRolling) {
+      if (isConnected) {
+        setEveryoneReady(false);
+      }
       interval.start();
     } else {
       interval.stop();
       setRollingValues(null);
     }
   }, [diceAreRolling]);
+
+  const diceRollHandler = useCallback(() => {
+    if (isConnected) {
+      setEveryoneReady(false);
+    }
+    rollDice();
+  }, [rollDice]);
+
+  useEffect(() => {
+    if (!peer) return;
+
+    let everyoneIsReady = true;
+
+    for (let peerId of [peer.id, ...Object.keys(peer.connections)]) {
+      if (!readyStates[peerId]) {
+        everyoneIsReady = false;
+      }
+    }
+
+    // Avoid needless state updates
+    if (everyoneIsReady) {
+      setEveryoneReady(true);
+    }
+  }, [peer, readyStates]);
   
   return (
     <>
-      { myTurn ? <Alert color="green" sx={{ textAlign: "center" }}>Your turn</Alert> : null }
+      { isConnected && myTurn ? <Alert color="green" sx={{ textAlign: "center" }}>Your turn</Alert> : null }
       <Paper p="xs" shadow="xs" radius="sm" className="roller">
         {(rollingValues ?? currentRoll).map((die, i) => {
           return (
@@ -38,9 +67,17 @@ export const Roller = () => {
             />
           );
         })}
-        <Button disabled={diceAreRolling} variant="filled" onClick={rollDice}>
-          Roll!
-        </Button>
+        { everyoneReady ? (
+          <Button disabled={diceAreRolling} variant="filled" onClick={diceRollHandler}>
+            Roll!
+          </Button>
+        ) : (
+          <Checkbox
+            label="Ready"
+            onChange={toggleReady}
+            value={!!readyStates[peer.id]}
+          />
+        )}
       </Paper>
     </>
   );

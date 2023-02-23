@@ -7,7 +7,7 @@ import { findCombinations, randomIntBetween } from "../helpers";
 const DiceRollContext = createContext();
 
 export function DiceRollProvider({children}) {
-  const { onUpdate, sendUpdate } = usePeer();
+  const { peer, onUpdate, sendUpdate } = usePeer();
   const [state, setState] = useSetState({
     combinations: {
       black: [],
@@ -16,7 +16,8 @@ export function DiceRollProvider({children}) {
     currentRoll: [1,2,3,4,5],
     diceAreRolling: false,
     selectedNumber: null,
-    myTurn: false
+    myTurn: false,
+    readyStates: {}
   });
 
   const getRandomDieNumber = () => randomIntBetween(1, 6);
@@ -24,7 +25,8 @@ export function DiceRollProvider({children}) {
   const { start: startRolling, clear } = useTimeout(() => {
     const newState = {
       currentRoll: state.currentRoll.map(() => getRandomDieNumber()),
-      diceAreRolling: false
+      diceAreRolling: false,
+      readyStates: {}
     }
     
     setState(newState);
@@ -43,6 +45,18 @@ export function DiceRollProvider({children}) {
   const setSelectedNumber = useCallback((num) => 
     setState({ selectedNumber: state.selectedNumber !== num ? num : null })
   , [state.selectedNumber]);
+
+  const toggleReady = useCallback(() => {
+    const updatedReadyState = {
+      readyStates: {
+        ...state.readyStates,
+        [peer.id]: !state.readyStates[peer.id]
+      }
+    };
+
+    setState(updatedReadyState);
+    sendUpdate(updatedReadyState);
+  }, [state.readyStates, peer]);
 
   useEffect(() => {
     const whiteDice = state.currentRoll.slice(0, state.currentRoll.length - 1);
@@ -69,11 +83,13 @@ export function DiceRollProvider({children}) {
     currentRoll: state.currentRoll,
     diceAreRolling: state.diceAreRolling,
     myTurn: state.myTurn,
+    readyStates: state.readyStates,
     selectedNumber: state.selectedNumber,
     getRandomDieNumber,
     rollDice,
     setSelectedNumber,
-  }), [rollDice, setSelectedNumber, state]);
+    toggleReady
+  }), [getRandomDieNumber, rollDice, setSelectedNumber, toggleReady, state]);
 
   return <DiceRollContext.Provider value={value}>{children}</DiceRollContext.Provider>;
 }

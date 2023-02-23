@@ -31,7 +31,7 @@ export function PeerContextProvider({
   const connect = useCallback((peerConnectionOptions) => {
     if (peer === undefined || !hostId) return;
 
-    const newConnection = peer.connect(hostId, peerConnectionOptions)
+    const newConnection = peer.connect(hostId, peerConnectionOptions);
 
     // This is needed to send from the host -> client
     newConnection.on("data", onUpdateCallback);
@@ -116,7 +116,7 @@ export function PeerContextProvider({
     sendUpdate,
     onUpdate: setOnUpdate,
     peer,
-  }), [createPeer, connect, disconnect, setOnUpdate, sendUpdate, state, peer]);
+  }), [createPeer, connect, disconnect, hostId, setOnUpdate, sendUpdate, state, peer]);
 
   return (
     <PeerContext.Provider value={value}>
