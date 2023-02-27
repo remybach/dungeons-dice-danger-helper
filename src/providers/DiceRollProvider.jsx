@@ -17,16 +17,14 @@ export function DiceRollProvider({children}) {
     diceAreRolling: false,
     selectedNumber: null,
     myTurn: false,
-    readyStates: {}
   });
 
   const getRandomDieNumber = () => randomIntBetween(1, 6);
   
-  const { start: startRolling, clear } = useTimeout(() => {
+  const { start: startRolling } = useTimeout(() => {
     const newState = {
       currentRoll: state.currentRoll.map(() => getRandomDieNumber()),
       diceAreRolling: false,
-      readyStates: {}
     }
     
     setState(newState);
@@ -45,18 +43,6 @@ export function DiceRollProvider({children}) {
   const setSelectedNumber = useCallback((num) => 
     setState({ selectedNumber: state.selectedNumber !== num ? num : null })
   , [state.selectedNumber]);
-
-  const toggleReady = useCallback(() => {
-    const updatedReadyState = {
-      readyStates: {
-        ...state.readyStates,
-        [peer.id]: !state.readyStates[peer.id]
-      }
-    };
-
-    setState(updatedReadyState);
-    sendUpdate(updatedReadyState);
-  }, [state.readyStates, peer]);
 
   useEffect(() => {
     const whiteDice = state.currentRoll.slice(0, state.currentRoll.length - 1);
@@ -83,13 +69,11 @@ export function DiceRollProvider({children}) {
     currentRoll: state.currentRoll,
     diceAreRolling: state.diceAreRolling,
     myTurn: state.myTurn,
-    readyStates: state.readyStates,
     selectedNumber: state.selectedNumber,
     getRandomDieNumber,
     rollDice,
     setSelectedNumber,
-    toggleReady
-  }), [getRandomDieNumber, rollDice, setSelectedNumber, toggleReady, state]);
+  }), [getRandomDieNumber, rollDice, setSelectedNumber, state]);
 
   return <DiceRollContext.Provider value={value}>{children}</DiceRollContext.Provider>;
 }
