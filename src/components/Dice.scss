@@ -22,6 +22,10 @@ $borderColour: #5C5F66;
     justify-content: space-around;
     padding: 0.5rem;
 
+    .equals {
+      margin-top: -5px;
+    }
+
     &-result {
       font-family: Monaco, monospace;
       font-size: 2rem;
